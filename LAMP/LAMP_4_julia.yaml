@@ -80,12 +80,12 @@ calibration:
       Delta: Delta_L
 
 domain:
-    z: [-sig_z, sig_z]
+    z: [-2*sig_z/(1-rho_z^2)^0.5,  2*sig_z/(1-rho_z^2)^0.5]
     Delta_L: [Delta_L*0.95, Delta_L*1.05]
 
 exogenous: !Normal
-    sigma: sig_z**2
-    
+    Sigma: sig_z^2
+
 options:
     grid: !Cartesian
-        n: [20, 20]
+        orders: [5, 10]
