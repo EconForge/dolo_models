@@ -1,0 +1,45 @@
+name: Income Fluctuation Problem (AR1 income)
+
+symbols:
+    states: [a, ly]
+    controls: [ap]
+    exogenous: [epsilon]
+    parameters: [beta, gamma, rho, sig_y, R]
+
+definitions:
+    y: exp(ly)
+    c: R * a + y - ap
+
+equations:
+
+    transition:
+        - a = ap(-1)
+        - ly = rho * ly(-1) + epsilon
+
+    arbitrage:
+        - 1 - beta*R*(c(1)^(-gamma)/c^(-gamma))
+
+############################
+calibration:
+    a: 5.0
+    ly: 0.0
+    ap: a
+    epsilon: 0.0
+    beta: 0.95
+    gamma: 2.0
+    rho: 0.9
+    sig_y: 0.01
+    R: 1/beta
+    y: exp(ly)
+    c: 1- a*(1-R)
+
+exogenous: !Normal
+    Sigma: sig_y^2
+
+domain:
+    a: [0.2*a, a*1.8]
+    ly: [-2*sig_y/(1-rho^2)^0.5,  2*sig_y/(1-rho^2)^0.5]
+
+options:
+    grid: !Cartesian
+        orders: [50, 10]
